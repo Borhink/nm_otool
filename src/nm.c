@@ -6,11 +6,47 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/02/28 18:36:55 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/02/28 21:05:15 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
+
+void	print_addr_32(uint32_t addr)
+{
+	const char	*base = "0123456789abcdef";
+	char		str[17];
+	int			i;
+
+	str[16] = '\0';
+	i = 16;
+	while (--i >= 8)
+	{
+		str[i] = base[addr % 16];
+		addr /= 16;
+	}
+	str[i] = '1';
+	while (--i >= 0)
+		str[i] = '0';
+	ft_putstr(str);
+}
+
+void	print_ntype(uint32_t n_type)
+{
+	uint32_t type;
+
+	type = n_type & N_TYPE;
+	if (type == N_UNDF)
+		ft_putchar('U');
+	else if (type == N_ABS)
+		ft_putchar('u');
+	else if (type == N_SECT)
+		ft_putchar('T');
+	else if (type == N_PBUD)
+		ft_putchar('3');
+	else if (type == N_INDR)
+		ft_putchar('4');
+}
 
 void	print_symtab_command(t_env *e, struct symtab_command *sym)
 {
@@ -23,6 +59,10 @@ void	print_symtab_command(t_env *e, struct symtab_command *sym)
 	i = -1;
 	while (++i < sym->nsyms)
 	{
+		print_addr_32(array[i].n_value);
+		ft_putchar(' ');
+		print_ntype(array[i].n_type);
+		ft_putchar(' ');
 		ft_putstr(stringtable + array[i].n_un.n_strx);
 		ft_putchar('\n');
 	}

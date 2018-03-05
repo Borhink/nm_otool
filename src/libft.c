@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/02/28 18:37:14 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/02 18:34:44 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,35 @@ void	ft_putchar(char c)
 void	ft_putstr(char *s)
 {
 	write(1, s, ft_strlen(s));
+}
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	i;
+
+	i = -1;
+	while (++i < n)
+		*(char*)(s + i) = (unsigned char)c;
+	return (s);
+}
+
+int		ft_strcmp(const char *s1, const char *s2)
+{
+	int		i;
+
+	i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0')
+	{
+		if (s1[i] != s2[i])
+			return (((unsigned char*)s1)[i] - ((unsigned char*)s2)[i]);
+		i++;
+	}
+	return (((unsigned char*)s1)[i] - ((unsigned char*)s2)[i]);
+}
+
+int		ft_toupper(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		c -= 32;
+	return (c);
 }

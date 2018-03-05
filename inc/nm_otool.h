@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2018/02/28 18:37:05 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/05 20:52:14 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+#include <stdio.h>
 
 # define GREEN "\033[32m"
 # define RED "\033[31m"
@@ -33,7 +34,14 @@ typedef struct s_env	t_env;
 
 struct	s_env
 {
-	void	*ptr;
+	void					*ptr;
+	struct load_command		*lc;
+	struct symtab_command	*sym;
+	struct mach_header_64	*header;
+	struct nlist_64			**nlist;
+	char					**sectnames;
+	char					**segnames;
+	int						nsect;
 };
 
 void	nm(t_env *e);
@@ -41,5 +49,8 @@ void	nm(t_env *e);
 size_t	ft_strlen(char *s);
 void	ft_putchar(char c);
 void	ft_putstr(char *s);
+void	*ft_memset(void *s, int c, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_toupper(int c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/02 18:34:44 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/06 15:25:37 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,4 @@ int		ft_strcmp(const char *s1, const char *s2)
 		i++;
 	}
 	return (((unsigned char*)s1)[i] - ((unsigned char*)s2)[i]);
-}
-
-int		ft_toupper(int c)
-{
-	if (c >= 'a' && c <= 'z')
-		c -= 32;
-	return (c);
 }

@@ -6,7 +6,7 @@
 #    By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/24 10:30:43 by qhonore           #+#    #+#              #
-#    Updated: 2018/02/28 17:24:10 by qhonore          ###   ########.fr        #
+#    Updated: 2018/03/06 18:04:02 by qhonore          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRC_PATH = ./src/
 OBJ_PATH = ./obj/
 INC_PATH = ./inc/
 
-SRC_NAME = nm.c libft.c
+SRC_NAME = nm.c libft.c libft2.c handle_64.c print_64.c handle_32.c print_32.c
 OBJ_NAME = $(SRC_NAME:.c=.o)
 NAME = ft_nm
 

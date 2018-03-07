@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 17:45:01 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 22:58:46 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>
 # include <mach/machine.h>
+# include <mach-o/ranlib.h>
+# include <ar.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
@@ -48,7 +50,7 @@ struct		s_env
 	char					*filename;
 	int						mult;
 	int						mult_arch;
-	int						first;
+	int						nfat_arch;
 };
 
 void		nm(t_env *e);
@@ -75,5 +77,6 @@ int			ft_toupper(int c);
 uint32_t	swap32(uint32_t n, unsigned int magic_number);
 uint64_t	swap64(uint64_t n, unsigned int magic_number);
 void		print_filename(t_env *e);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

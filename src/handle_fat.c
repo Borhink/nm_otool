@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 16:09:48 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 17:26:21 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 23:23:05 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ static void	handle_all_arch_32(t_env *e, struct fat_header *header)
 	}
 }
 
+void test(char o)
+{
+	const char	*base = "0123456789abcdef";
+
+	ft_putchar(base[o / 16]);
+	ft_putchar(base[o % 16]);
+	ft_putchar(' ');
+}
+
 void		handle_fat_32(t_env *e, struct fat_header *header)
 {
 	uint32_t				i;
@@ -40,9 +49,12 @@ void		handle_fat_32(t_env *e, struct fat_header *header)
 
 	fat = (void*)header + sizeof(*header);
 	i = -1;
+	e->nfat_arch = swap32(header->nfat_arch, e->magic);
 	while (++i < swap32(header->nfat_arch, e->fat_magic))
 	{
 		head = (void*)header + swap32(fat[i].offset, e->fat_magic);
+		if (!ft_strncmp((void*)head, ARMAG, SARMAG))
+			ft_putstr("GET OUT THE WAY, BITCH !!\n");
 		if (head->magic == MH_MAGIC_64 || head->magic == MH_CIGAM_64)
 		{
 			e->ptr = head;
@@ -83,6 +95,7 @@ void		handle_fat_64(t_env *e, struct fat_header *header)
 
 	fat64 = (void*)header + sizeof(*header);
 	i = -1;
+	e->nfat_arch = swap32(header->nfat_arch, e->magic);
 	while (++i < swap32(header->nfat_arch, e->magic))
 	{
 		head = (void*)header + swap64(fat64[i].offset, e->magic);

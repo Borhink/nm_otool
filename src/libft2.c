@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 17:44:48 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 22:58:40 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ void	print_filename(t_env *e)
 {
 	if (e->mult || e->mult_arch)
 	{
-		ft_putchar('\n');
+		if (!e->mult_arch || (e->mult_arch && e->nfat_arch > 1))
+			ft_putchar('\n');
 		ft_putstr(e->filename);
-		if (e->mult_arch)
+		if (e->mult_arch && e->nfat_arch > 1)
 		{
 			ft_putstr(" (for architecture ");
 			if (swap32(e->header->cputype, e->magic) == CPU_TYPE_POWERPC
@@ -57,4 +58,22 @@ void	print_filename(t_env *e)
 		}
 		ft_putstr(":\n");
 	}
+}
+
+int		ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t		i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+	{
+		if (s1[i] != s2[i])
+			return (((unsigned char*)s1)[i] - ((unsigned char*)s2)[i]);
+		i++;
+	}
+	if (i == n)
+		i--;
+	return (((unsigned char*)s1)[i] - ((unsigned char*)s2)[i]);
 }

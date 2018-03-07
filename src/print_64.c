@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:06:08 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 17:13:50 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 21:56:13 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,21 @@ static int		check_names(t_env *e, uint8_t n_sect, char *segname,\
 
 	i = -1;
 	lc = e->ptr + sizeof(*e->header64);
-	while (++i < e->header64->ncmds)
+	while (++i < swap32(e->header64->ncmds, e->magic))
 	{
-		if (lc->cmd == LC_SEGMENT_64)
+		if (swap32(lc->cmd, e->magic) == LC_SEGMENT_64)
 		{
 			seg = (void*)lc;
 			sect = (void*)lc + sizeof(*(seg));
 			j = -1;
-			while (++j < seg->nsects)
+			while (++j < swap32(seg->nsects, e->magic))
 			{
 				if (n_sect == 0)
 					return (check_names2(sect[j], segname, sectname));
 				--n_sect;
 			}
 		}
-		lc = (void*)lc + lc->cmdsize;
+		lc = (void*)lc + swap32(lc->cmdsize, e->magic);
 	}
 	return (-1);
 }

@@ -6,11 +6,13 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 17:26:12 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 22:44:18 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
+
+// void	handle_archive(t_env *e, )
 
 void	nm(t_env *e)
 {
@@ -72,14 +74,7 @@ int		main(int ac, char **av)
 		ft_memset(&e, 0, sizeof(t_env));
 		if (ac > 2)
 			e.mult = 1;
-		e.first = 1;
 		parse_args(&e, ac, av);
 	}
 	return (0);
 }
-
-/*
-** /usr/bin/audiodevice (for architecture ppc):
-** /usr/bin/audiodevice (for architecture i386):
-** ft_nm:
-*/

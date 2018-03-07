@@ -6,13 +6,13 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:06:08 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/06 18:31:42 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 18:29:31 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-void		print_addr_32(uint32_t addr, uint8_t n_type)
+void			print_addr_32(uint32_t addr, uint8_t n_type)
 {
 	const char	*base = "0123456789abcdef";
 	int			def;
@@ -30,7 +30,7 @@ void		print_addr_32(uint32_t addr, uint8_t n_type)
 	ft_putstr(str);
 }
 
-static int	check_names2(struct section sect, char *segname, char *sectname)
+static int		check_names2(struct section sect, char *segname, char *sectname)
 {
 	if (!ft_strcmp(sect.segname, segname)\
 	&& !ft_strcmp(sect.sectname, sectname))
@@ -38,7 +38,8 @@ static int	check_names2(struct section sect, char *segname, char *sectname)
 	return (0);
 }
 
-static int	check_names(t_env *e, uint8_t n_sect, char *segname, char *sectname)
+static int		check_names(t_env *e, uint8_t n_sect, char *segname,\
+																char *sectname)
 {
 	struct load_command		*lc;
 	struct segment_command	*seg;
@@ -48,9 +49,9 @@ static int	check_names(t_env *e, uint8_t n_sect, char *segname, char *sectname)
 
 	i = -1;
 	lc = e->ptr + sizeof(*e->header);
-	while (++i < e->header->ncmds)
+	while (++i < swap32(e->header->ncmds, e->magic))
 	{
-		if (lc->cmd == LC_SEGMENT)
+		if (swap32(lc->cmd, e->magic) == LC_SEGMENT)
 		{
 			seg = (void*)lc;
 			sect = (void*)lc + sizeof(*(seg));
@@ -62,7 +63,7 @@ static int	check_names(t_env *e, uint8_t n_sect, char *segname, char *sectname)
 				--n_sect;
 			}
 		}
-		lc = (void*)lc + lc->cmdsize;
+		lc = (void*)lc + swap32(lc->cmdsize, e->magic);
 	}
 	return (-1);
 }
@@ -82,7 +83,7 @@ static uint32_t	check_sect(t_env *e, uint8_t n_sect)
 	return (c);
 }
 
-char		get_ntype_32(t_env *e, struct nlist *sorted, uint32_t n_type,\
+char			get_ntype_32(t_env *e, struct nlist *sorted, uint32_t n_type,\
 																	int n_value)
 {
 	char		type;

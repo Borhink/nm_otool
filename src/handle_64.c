@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:04:07 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/06 22:07:15 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 17:45:31 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void		handle_magic_64(t_env *e, struct mach_header_64 *header)
 	i = -1;
 	e->header64 = header;
 	e->lc = e->ptr + sizeof(*header);
+	print_filename(e);
 	while (++i < header->ncmds)
 	{
 		if (e->lc->cmd == LC_SYMTAB)

@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:06:08 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/06 22:14:23 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/07 17:13:50 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void			print_addr_64(uint64_t addr, uint8_t n_type)
 	ft_putstr(str);
 }
 
-static int	check_names2(struct section_64 sect, char *segname, char *sectname)
+static int		check_names2(struct section_64 sect, char *segname,\
+																char *sectname)
 {
 	if (!ft_strcmp(sect.segname, segname)\
 	&& !ft_strcmp(sect.sectname, sectname))
@@ -38,7 +39,8 @@ static int	check_names2(struct section_64 sect, char *segname, char *sectname)
 	return (0);
 }
 
-static int	check_names(t_env *e, uint8_t n_sect, char *segname, char *sectname)
+static int		check_names(t_env *e, uint8_t n_sect, char *segname,\
+																char *sectname)
 {
 	struct load_command			*lc;
 	struct segment_command_64	*seg;
@@ -82,8 +84,8 @@ static uint32_t	check_sect(t_env *e, uint8_t n_sect)
 	return (c);
 }
 
-char		get_ntype_64(t_env *e, struct nlist_64 *sorted, uint32_t n_type,\
-																	int n_value)
+char			get_ntype_64(t_env *e, struct nlist_64 *sorted,\
+												uint32_t n_type, int n_value)
 {
 	char		type;
 

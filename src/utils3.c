@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/09 21:54:21 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/09 23:06:01 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_strchr(const char *s, int c)
 
 int		corrupted_ptr(t_env *e, void *ptr)
 {
-	if (ptr <= e->eof)
+	if (ptr > e->eof)
 		return (1);
 	return (0);
 }

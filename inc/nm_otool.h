@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/09 22:07:29 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/09 23:21:15 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ struct		s_env
 	int						mult_arch;
 	int						nfat_arch;
 	uint32_t				sym_nb;
-	void*					eof;
+	void					*eof;
 };
 
 int			nm(t_env *e);

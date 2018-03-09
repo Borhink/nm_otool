@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft2.c                                           :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 22:58:40 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/09 22:18:20 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ uint64_t	swap64(uint64_t n, unsigned int magic_number)
 	return (n);
 }
 
-void	print_filename(t_env *e)
+void		print_filename(t_env *e)
 {
 	if (e->mult || e->mult_arch)
 	{
@@ -60,7 +60,7 @@ void	print_filename(t_env *e)
 	}
 }
 
-int		ft_strncmp(const char *s1, const char *s2, size_t n)
+int			ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t		i;
 

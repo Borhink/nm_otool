@@ -6,13 +6,13 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 16:09:48 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 23:23:05 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/09 22:18:07 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
 
-static void	handle_all_arch_32(t_env *e, struct fat_header *header)
+static int	handle_all_arch_32(t_env *e, struct fat_header *header)
 {
 	uint32_t				i;
 	struct fat_arch			*fat;
@@ -26,22 +26,18 @@ static void	handle_all_arch_32(t_env *e, struct fat_header *header)
 		e->ptr = head;
 		e->magic = *((int*)e->ptr);
 		if (head->magic == MH_MAGIC_64 || head->magic == MH_CIGAM_64)
-			handle_magic_64(e, head);
+		{
+			if (!handle_magic_64(e, head))
+				return (0);
+		}
 		else if (head->magic == MH_MAGIC || head->magic == MH_CIGAM)
-			handle_magic_32(e, (void*)head);
+			if (!handle_magic_32(e, (void*)head))
+				return (0);
 	}
+	return (1);
 }
 
-void test(char o)
-{
-	const char	*base = "0123456789abcdef";
-
-	ft_putchar(base[o / 16]);
-	ft_putchar(base[o % 16]);
-	ft_putchar(' ');
-}
-
-void		handle_fat_32(t_env *e, struct fat_header *header)
+int			handle_fat_32(t_env *e, struct fat_header *header)
 {
 	uint32_t				i;
 	struct fat_arch			*fat;
@@ -49,25 +45,28 @@ void		handle_fat_32(t_env *e, struct fat_header *header)
 
 	fat = (void*)header + sizeof(*header);
 	i = -1;
-	e->nfat_arch = swap32(header->nfat_arch, e->magic);
+	e->nfat_arch = swap32(header->nfat_arch, e->fat_magic);
 	while (++i < swap32(header->nfat_arch, e->fat_magic))
 	{
 		head = (void*)header + swap32(fat[i].offset, e->fat_magic);
-		if (!ft_strncmp((void*)head, ARMAG, SARMAG))
-			ft_putstr("GET OUT THE WAY, BITCH !!\n");
+		if (!ft_strncmp((void*)head, ARMAG, SARMAG)
+		&& swap32(fat[i].cputype, e->fat_magic) == CPU_TYPE_X86_64)
+		{
+			e->ptr = head;
+			return (handle_archive(e));
+		}
 		if (head->magic == MH_MAGIC_64 || head->magic == MH_CIGAM_64)
 		{
 			e->ptr = head;
 			e->magic = *((int*)e->ptr);
-			handle_magic_64(e, head);
-			return ;
+			return (handle_magic_64(e, head));
 		}
 	}
 	e->mult_arch = 1;
-	handle_all_arch_32(e, header);
+	return (handle_all_arch_32(e, header));
 }
 
-static void	handle_all_arch_64(t_env *e, struct fat_header *header)
+static int	handle_all_arch_64(t_env *e, struct fat_header *header)
 {
 	uint32_t				i;
 	struct fat_arch_64		*fat;
@@ -81,13 +80,18 @@ static void	handle_all_arch_64(t_env *e, struct fat_header *header)
 		e->ptr = head;
 		e->magic = *((int*)e->ptr);
 		if (head->magic == MH_MAGIC_64 || head->magic == MH_CIGAM_64)
-			handle_magic_64(e, head);
+		{
+			if (!handle_magic_64(e, head))
+				return (0);
+		}
 		else if (head->magic == MH_MAGIC || head->magic == MH_CIGAM)
-			handle_magic_32(e, (void*)head);
+			if (!handle_magic_32(e, (void*)head))
+				return (0);
 	}
+	return (1);
 }
 
-void		handle_fat_64(t_env *e, struct fat_header *header)
+int			handle_fat_64(t_env *e, struct fat_header *header)
 {
 	uint32_t				i;
 	struct fat_arch_64		*fat64;
@@ -103,10 +107,9 @@ void		handle_fat_64(t_env *e, struct fat_header *header)
 		{
 			e->ptr = head;
 			e->magic = *((int*)e->ptr);
-			handle_magic_64(e, head);
-			return ;
+			return (handle_magic_64(e, head));
 		}
 	}
 	e->mult_arch = 1;
-	handle_all_arch_64(e, header);
+	return (handle_all_arch_64(e, header));
 }

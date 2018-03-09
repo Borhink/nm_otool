@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:04:07 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 18:23:34 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/09 22:08:04 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	print_symtab_command(t_env *e, struct symtab_command *sym)
 	}
 }
 
-void		handle_magic_32(t_env *e, struct mach_header *header)
+int			handle_magic_32(t_env *e, struct mach_header *header)
 {
 	uint32_t		i;
 
@@ -92,4 +92,5 @@ void		handle_magic_32(t_env *e, struct mach_header *header)
 		}
 		e->lc = (void*)e->lc + swap32(e->lc->cmdsize, e->magic);
 	}
+	return (1);
 }

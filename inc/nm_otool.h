@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/09 23:21:15 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/11 21:14:08 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define CYAN "\033[36m"
 # define EOC "\033[0m"
 
+# define PPC_CPU CPU_TYPE_POWERPC
+
 typedef struct s_env	t_env;
 
 struct		s_env
@@ -53,9 +55,11 @@ struct		s_env
 	int						nfat_arch;
 	uint32_t				sym_nb;
 	void					*eof;
+	int						archive;
 };
 
 int			nm(t_env *e);
+int			otool(t_env *e);
 
 int			handle_fat_64(t_env *e, struct fat_header *header);
 int			handle_fat_32(t_env *e, struct fat_header *header);

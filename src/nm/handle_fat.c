@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/07 16:09:48 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/09 22:18:07 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/11 15:06:18 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	handle_all_arch_32(t_env *e, struct fat_header *header)
 	while (++i < swap32(header->nfat_arch, e->fat_magic))
 	{
 		head = (void*)header + swap32(fat[i].offset, e->fat_magic);
+		if (corrupted_ptr(e, head))
+			return (0);
 		e->ptr = head;
 		e->magic = *((int*)e->ptr);
 		if (head->magic == MH_MAGIC_64 || head->magic == MH_CIGAM_64)
@@ -77,6 +79,8 @@ static int	handle_all_arch_64(t_env *e, struct fat_header *header)
 	while (++i < swap32(header->nfat_arch, e->fat_magic))
 	{
 		head = (void*)header + swap64(fat[i].offset, e->fat_magic);
+		if (corrupted_ptr(e, head))
+			return (0);
 		e->ptr = head;
 		e->magic = *((int*)e->ptr);
 		if (head->magic == MH_MAGIC_64 || head->magic == MH_CIGAM_64)

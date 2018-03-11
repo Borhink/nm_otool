@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 15:15:41 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/09 22:10:17 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/11 21:10:00 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,12 @@ static void	order_archive(t_env *e, struct ranlib **sorted, uint32_t sym_nb,\
 	e->sym_nb = j;
 	if (e->sym_nb > 1)
 		sort_nsyms(sorted, e->sym_nb);
+	ft_putstr("Archive : ");
+	ft_putstr(e->filename);
+	ft_putchar('\n');
 }
 
-static void	print_archive(t_env *e, uint32_t sym_nb, struct ranlib *ran)
+static int	print_archive(t_env *e, uint32_t sym_nb, struct ranlib *ran)
 {
 	struct ranlib	*sorted[sym_nb];
 	int				len;
@@ -75,15 +78,17 @@ static void	print_archive(t_env *e, uint32_t sym_nb, struct ranlib *ran)
 	while (++i < e->sym_nb)
 	{
 		ar = start + sorted[i]->ran_off;
+		if (corrupted_ptr(e, ar))
+			return (0);
 		len = ft_atoi(ft_strchr(ar->ar_name, '/') + 1);
-		ft_putchar('\n');
 		ft_putstr(e->filename);
 		ft_putchar('(');
 		ft_putstr((void*)ar + sizeof(*ar));
 		ft_putstr("):\n");
 		e->ptr = (void*)ar + sizeof(*ar) + len;
-		nm(e);
+		otool(e);
 	}
+	return (1);
 }
 
 int			handle_archive(t_env *e)
@@ -93,10 +98,14 @@ int			handle_archive(t_env *e)
 	void			*symtable;
 	struct ranlib	*ran;
 
+	e->archive = 1;
 	len = ft_atoi(ft_strchr(e->ptr, '/') + 1);
 	symtable = e->ptr + SARMAG + sizeof(struct ar_hdr) + len;
 	ran = symtable + sizeof(uint32_t);
+	if (corrupted_ptr(e, symtable))
+		return (0);
 	sym_nb = (*(int*)symtable) / sizeof(struct ranlib);
-	print_archive(e, sym_nb, ran);
+	if (corrupted_ptr(e, ran + sym_nb) || !print_archive(e, sym_nb, ran))
+		return (0);
 	return (1);
 }

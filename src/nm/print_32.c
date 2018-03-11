@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:06:08 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/07 21:57:34 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/11 14:56:06 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,12 @@ static int		check_names(t_env *e, uint8_t n_sect, char *segname,\
 			sect = (void*)lc + sizeof(*(seg));
 			j = -1;
 			while (++j < swap32(seg->nsects, e->magic))
-			{
-				if (n_sect == 0)
+				if (--n_sect <= 0)
 					return (check_names2(sect[j], segname, sectname));
-				--n_sect;
-			}
 		}
 		lc = (void*)lc + swap32(lc->cmdsize, e->magic);
 	}
-	return (-1);
+	return (0);
 }
 
 static uint32_t	check_sect(t_env *e, uint8_t n_sect)
@@ -97,7 +94,7 @@ char			get_ntype_32(t_env *e, struct nlist *sorted, uint32_t n_type,\
 	else if ((n_type & N_TYPE) == N_ABS)
 		type = 'a';
 	else if ((n_type & N_TYPE) == N_SECT)
-		type = check_sect(e, sorted->n_sect - 1);
+		type = check_sect(e, sorted->n_sect);
 	else if ((n_type & N_TYPE) == N_INDR)
 		type = 'i';
 	else

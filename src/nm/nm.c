@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/11 17:50:10 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/12 20:31:58 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ void		parse_args(t_env *e, int ac, char **av)
 	i = 0;
 	while (++i < ac)
 	{
-		if ((ptr = mmap_file(&buff, av[i])))
+		if (!ft_strcmp(av[i], "-no-sort") || !ft_strcmp(av[i], "-n"))
+			e->sort = 'n';
+		else if (!ft_strcmp(av[i], "-numeric-sort") || !ft_strcmp(av[i], "-N"))
+			e->sort = 'N';
+		else if ((ptr = mmap_file(&buff, av[i])))
 		{
 			e->ptr = ptr;
 			e->filename = av[i];
@@ -79,6 +83,22 @@ void		parse_args(t_env *e, int ac, char **av)
 	}
 }
 
+int			count_file(int ac, char **av)
+{
+	int		i;
+	int		nb;
+
+	i = 0;
+	nb = 0;
+	while (++i < ac)
+	{
+		if (ft_strcmp(av[i], "-no-sort") && ft_strcmp(av[i], "-n")
+		&& ft_strcmp(av[i], "-numeric-sort") && ft_strcmp(av[i], "-N"))
+			++nb;
+	}
+	return (nb);
+}
+
 int			main(int ac, char **av)
 {
 	t_env		e;
@@ -88,9 +108,12 @@ int			main(int ac, char **av)
 	else
 	{
 		ft_memset(&e, 0, sizeof(t_env));
-		if (ac > 2)
+		e.sort = 'a';
+		if (count_file(ac, av) > 1)
 			e.mult = 1;
 		parse_args(&e, ac, av);
 	}
 	return (0);
 }
+//-no-sort
+//-numeric-sort

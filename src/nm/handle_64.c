@@ -6,11 +6,27 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:04:07 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/11 14:27:02 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/12 19:42:21 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm_otool.h"
+
+static int	is_sort(t_env *e, struct nlist_64 **tab, char *strtable, int i)
+{
+	if (e->sort == 'a'
+	&& (ft_strcmp(strtable + swap32(tab[i]->n_un.n_strx, e->magic),\
+	strtable + swap32(tab[i + 1]->n_un.n_strx, e->magic)) > 0\
+	|| (ft_strcmp(strtable + swap32(tab[i]->n_un.n_strx, e->magic),\
+	strtable + swap32(tab[i + 1]->n_un.n_strx, e->magic)) == 0\
+	&& swap64(tab[i]->n_value, e->magic) > swap64(tab[i + 1]->n_value,\
+	e->magic))))
+		return (0);
+	else if (e->sort == 'N' && swap64(tab[i]->n_value, e->magic) >\
+	swap64(tab[i + 1]->n_value, e->magic))
+		return (0);
+	return (1);
+}
 
 static int	sort_nsyms(t_env *e, struct nlist_64 **tab, char *strtable,\
 																uint32_t len)
@@ -23,12 +39,7 @@ static int	sort_nsyms(t_env *e, struct nlist_64 **tab, char *strtable,\
 	{
 		if (corrupted_ptr(e, strtable + swap32(tab[i]->n_un.n_strx, e->magic)))
 			return (0);
-		if (ft_strcmp(strtable + swap32(tab[i]->n_un.n_strx, e->magic),\
-		strtable + swap32(tab[i + 1]->n_un.n_strx, e->magic)) > 0\
-		|| (ft_strcmp(strtable + swap32(tab[i]->n_un.n_strx, e->magic),\
-		strtable + swap32(tab[i + 1]->n_un.n_strx, e->magic)) == 0\
-		&& swap64(tab[i]->n_value, e->magic) > swap64(tab[i + 1]->n_value,\
-		e->magic)))
+		if (!is_sort(e, tab, strtable, i))
 		{
 			tmp = tab[i];
 			tab[i] = tab[i + 1];

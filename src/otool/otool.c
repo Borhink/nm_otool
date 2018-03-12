@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/11 21:08:45 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/12 17:45:55 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,22 @@ static void	*mmap_file(struct stat *buff, char *path)
 	return (NULL);
 }
 
+static int	parse_args2(t_env *e, int ac, char **av, int *i)
+{
+	if (!ft_strcmp(av[*i], "-d"))
+		e->arg = 'd';
+	else if (ac > 3 && !ft_strcmp(av[*i], "-s"))
+	{
+		e->arg = 's';
+		e->argseg = av[*i + 1];
+		e->argsect = av[*i + 2];
+		*i += 2;
+	}
+	else
+		return (1);
+	return (0);
+}
+
 void		parse_args(t_env *e, int ac, char **av)
 {
 	struct stat	buff;
@@ -66,7 +82,7 @@ void		parse_args(t_env *e, int ac, char **av)
 	i = 0;
 	while (++i < ac)
 	{
-		if ((ptr = mmap_file(&buff, av[i])))
+		if (parse_args2(e, ac, av, &i) && (ptr = mmap_file(&buff, av[i])))
 		{
 			e->ptr = ptr;
 			e->archive = 0;
@@ -85,11 +101,18 @@ int			main(int ac, char **av)
 	t_env		e;
 
 	if (ac < 2)
-		ft_putstr(YELLOW "usage: ./ft_nm [path]\n" EOC);
+		ft_putstr(YELLOW "usage: ./ft_otool (args) [path]\n" EOC);
 	else
 	{
 		ft_memset(&e, 0, sizeof(t_env));
+		e.arg = 't';
 		parse_args(&e, ac, av);
 	}
 	return (0);
 }
+
+//Support architecture ppc (/usr/bin/audiodevice)
+//Support archives
+//Gestion fichiers corrompus
+//-d __DATA __data
+//-s <sectname> <segname>

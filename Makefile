@@ -6,14 +6,14 @@
 #    By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/24 10:30:43 by qhonore           #+#    #+#              #
-#    Updated: 2018/03/11 21:14:37 by qhonore          ###   ########.fr        #
+#    Updated: 2018/03/12 16:50:59 by qhonore          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = ./src/nm/
 SRC_PATH2 = ./src/otool/
-OBJ_PATH = ./obj/nm/
-OBJ_PATH2 = ./obj/otool/
+OBJ_PATH = ./obj_nm/
+OBJ_PATH2 = ./obj_otool/
 INC_PATH = ./inc/
 
 SRC_NAME = nm.c handle_64.c print_64.c handle_32.c print_32.c\

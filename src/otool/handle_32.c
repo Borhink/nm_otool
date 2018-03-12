@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 15:04:07 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/11 21:13:41 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/12 17:09:07 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,17 @@ static int	print_segment(t_env *e, struct segment_command *seg)
 	sect = (void*)seg + sizeof(*(seg));
 	while (++i < swap32(seg->nsects, e->magic))
 	{
-		if (corrupted_ptr(e, sect + i))
+		if (corrupted_ptr(e, sect + i)\
+		|| (e->arg == 'd' && !ft_strcmp(sect[i].segname, SEG_DATA)\
+		&& !ft_strcmp(sect[i].sectname, SECT_DATA)\
+		&& !print_section(e, sect[i], SEG_DATA, SECT_DATA))\
+		|| (e->arg == 't' && !ft_strcmp(sect[i].segname, SEG_TEXT)\
+		&& !ft_strcmp(sect[i].sectname, SECT_TEXT)\
+		&& !print_section(e, sect[i], SEG_TEXT, SECT_TEXT))\
+		|| (e->arg == 's' && !ft_strcmp(sect[i].segname, e->argseg)\
+		&& !ft_strcmp(sect[i].sectname, e->argsect)\
+		&& !print_section(e, sect[i], e->argseg, e->argsect)))
 			return (0);
-		if (!ft_strcmp(sect[i].segname, SEG_TEXT)\
-		&& !ft_strcmp(sect[i].sectname, SECT_TEXT))
-			if (!print_section(e, sect[i], SEG_TEXT, SECT_TEXT))
-				return (0);
 	}
 	return (1);
 }

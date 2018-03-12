@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/11 21:14:08 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/12 19:34:44 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@ struct		s_env
 	uint32_t				sym_nb;
 	void					*eof;
 	int						archive;
+	char					arg;
+	char					*argseg;
+	char					*argsect;
+	char					sort;
 };
 
 int			nm(t_env *e);

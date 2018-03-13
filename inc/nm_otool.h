@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/12 17:44:40 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/12 19:34:44 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/13 13:11:37 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-#include <stdio.h>
 
 # define GREEN "\033[32m"
 # define RED "\033[31m"

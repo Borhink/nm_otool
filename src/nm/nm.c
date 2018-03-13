@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/12 20:31:58 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/13 13:19:25 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,11 @@ int			main(int ac, char **av)
 	t_env		e;
 
 	if (ac < 2)
-		ft_putstr(YELLOW "usage: ./ft_nm [path]\n" EOC);
+	{
+		ft_putstr(YELLOW "usage: ./ft_nm [options] <input files>\n");
+		ft_putstr("\t-no-sort (-n) Show symbols in order encountered\n");
+		ft_putstr("\t-numeric-sort (-N) Sort symbols by address\n" EOC);
+	}
 	else
 	{
 		ft_memset(&e, 0, sizeof(t_env));
@@ -115,5 +119,3 @@ int			main(int ac, char **av)
 	}
 	return (0);
 }
-//-no-sort
-//-numeric-sort

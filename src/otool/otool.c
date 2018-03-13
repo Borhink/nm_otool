@@ -6,7 +6,7 @@
 /*   By: qhonore <qhonore@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/28 16:48:20 by qhonore           #+#    #+#             */
-/*   Updated: 2018/03/12 17:45:55 by qhonore          ###   ########.fr       */
+/*   Updated: 2018/03/13 13:20:23 by qhonore          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,15 @@ static int	parse_args2(t_env *e, int ac, char **av, int *i)
 {
 	if (!ft_strcmp(av[*i], "-d"))
 		e->arg = 'd';
-	else if (ac > 3 && !ft_strcmp(av[*i], "-s"))
+	else if (!ft_strcmp(av[*i], "-s"))
 	{
-		e->arg = 's';
-		e->argseg = av[*i + 1];
-		e->argsect = av[*i + 2];
-		*i += 2;
+		if (*i + 2 < ac)
+		{
+			e->arg = 's';
+			e->argseg = av[*i + 1];
+			e->argsect = av[*i + 2];
+			*i += 2;
+		}
 	}
 	else
 		return (1);
@@ -101,7 +104,11 @@ int			main(int ac, char **av)
 	t_env		e;
 
 	if (ac < 2)
-		ft_putstr(YELLOW "usage: ./ft_otool (args) [path]\n" EOC);
+	{
+		ft_putstr(YELLOW "usage: ./ft_otool [-ds] <object file>\n");
+		ft_putstr("\t-d print the data section\n");
+		ft_putstr("\t-s <segname> <sectname> print contents of section\n" EOC);
+	}
 	else
 	{
 		ft_memset(&e, 0, sizeof(t_env));
@@ -110,9 +117,3 @@ int			main(int ac, char **av)
 	}
 	return (0);
 }
-
-//Support architecture ppc (/usr/bin/audiodevice)
-//Support archives
-//Gestion fichiers corrompus
-//-d __DATA __data
-//-s <sectname> <segname>
